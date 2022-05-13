@@ -1,8 +1,10 @@
 package com.greenblat.twitter.controller;
 
 import com.greenblat.twitter.model.Message;
+import com.greenblat.twitter.model.User;
 import com.greenblat.twitter.repo.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,7 @@ public class MainController {
     private MessageRepo messageRepo;
 
     @GetMapping("/")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Map<String, Object> model) {
+    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Map<String, Object> model) {
         model.put("name", name);
         return "greeting";
     }
@@ -31,10 +33,14 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String add(@RequestParam String text, @RequestParam String tag)
-    {
-        Message newMessage = new Message(text, tag);
+    public String add(@AuthenticationPrincipal User user, @RequestParam String text, @RequestParam String tag) {
+        System.out.println(5);
+        Message newMessage = new Message(text, tag, user);
+        System.out.println(10);
         messageRepo.save(newMessage);
+
+        System.out.println(15);
+
 
         return "redirect:/main";
     }

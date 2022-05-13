@@ -1,7 +1,5 @@
 package com.greenblat.twitter.model;
 
-import org.springframework.stereotype.Controller;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,12 +16,21 @@ public class Message {
     @Column(name = "tag")
     private String tag;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "<none>";
+    }
+
     public Message() {
     }
 
-    public Message(String text, String tag) {
+    public Message(String text, String tag, User author) {
         this.text = text;
         this.tag = tag;
+        this.author = author;
     }
 
     public Long getId() {
