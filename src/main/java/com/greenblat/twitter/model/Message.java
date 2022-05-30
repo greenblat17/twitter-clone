@@ -57,6 +57,14 @@ public class Message {
         this.tag = tag;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
